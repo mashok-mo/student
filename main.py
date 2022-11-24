@@ -118,26 +118,24 @@ class Controller:
     def update_semester(self):
         print_list = []
         delete_student_list = []
-        for i in range(len(self.student_list)):
-            self.student_list[i].update()
-            print_list.append(f'Студент {i+1} весь месяц {self.student_list[i].update()}.\nЗдоровье: {self.student_list[i].health}\nЭнергия: {self.student_list[i].energy}\nСчастье: {self.student_list[i].happy}\nУспеваемость: {self.student_list[i].progress}\nИнтеллект: {self.student_list[i].intelligence}')
+        for j in range(self.num_student):
+            print_list.append(f'Студент {j+1} весь месяц {self.student_list[j].update()}.\nЗдоровье: {self.student_list[j].health}\nЭнергия: {self.student_list[j].energy}\nСчастье: {self.student_list[j].happy}\nУспеваемость: {self.student_list[j].progress}\nИнтеллект: {self.student_list[j].intelligence}')
 
-            if self.student_list[i].check_health() == False:
-                print_list.append(f'Сердце студента {i+1} не выдержало этот семестр')
-                delete_student_list.append(self.student_list[i])
+            if self.student_list[j].check_health() == False:
+                print_list.append(f'Сердце студента {j+1} не выдержало этот семестр')
+                delete_student_list.append(self.student_list[j])
 
-            elif self.student_list[i].check_energy() == False:
-                print_list.append(f'Студент {i+1} упал без сил перед стенами университета')
-                delete_student_list.append(self.student_list[i])
+            elif self.student_list[j].check_energy() == False:
+                print_list.append(f'Студент {j+1} упал без сил перед стенами университета')
+                delete_student_list.append(self.student_list[j])
 
-            elif self.student_list[i].check_happy() == False:
-                print_list.append(f'Студент {i+1} попал в психбольницу с тяжелой депрессией')
-                delete_student_list.append(self.student_list[i])
+            elif self.student_list[j].check_happy() == False:
+                print_list.append(f'Студент {j+1} попал в психбольницу с тяжелой депрессией')
+                delete_student_list.append(self.student_list[j])
 
-            elif self.student_list[i].check_progress() == False:
-                print_list.append(f'Студент {i+1} не закрыл фх')
-                delete_student_list.append(self.student_list[i])
-            i+=1
+            elif self.student_list[j].check_progress() == False:
+                print_list.append(f'Студент {j+1} не закрыл фх')
+                delete_student_list.append(self.student_list[j])
 
         return(print_list)
 
@@ -147,7 +145,6 @@ def main():
     controller = Controller(num_student)
     controller.create_student()
     for i in range (num_semester):
-        controller.update_semester()
         print(controller.update_semester())
 main()
 
