@@ -2,17 +2,46 @@ import random
 
 class Student:
     def __init__(self, health, energy, progress, happy, predisposition):
-        self.health = health
-        self.energy = energy
-        self.progress = progress
-        self.happy = happy
-        self.predisposition = predisposition
+        self.__health = health
+        self.__energy = energy
+        self.__progress = progress
+        self.__happy = happy
+        self.__predisposition = predisposition
+
+    @property
+    def health(self):
+        return self.__health
+    @property
+    def energy(self):
+        return self.__energy
+    @property
+    def progress(self):
+        return self.__progress
+    @property
+    def happy(self):
+        return self.__happy
+    @property
+    def predisposition(self):
+        return self.__predisposition
+
+    @health.setter
+    def health(self, health):
+        self.__health = health
+    @energy.setter
+    def energy(self, energy):
+        self.__energy = energy
+    @progress.setter
+    def progress(self, progress):
+        self.__progress = progress
+    @happy.setter
+    def happy(self, happy):
+        self.__happy = happy
 
     def study(self):
-        self.energy -= random.randint(10,20)
-        self.health -= random.randint(10,20)
-        self.progress += random.randint(20,25)
-        self.happy -= random.randint(10,20)
+        self.energy -= random.randint(10, 20)
+        self.health -= random.randint(10, 20)
+        self.progress += random.randint(25, 30)
+        self.happy -= random.randint(15, 20)
         return('учился')
     def relax(self):
         self.happy += random.randint(5,10)
@@ -21,11 +50,11 @@ class Student:
         return('отдыхал')
     def fun(self):
         self.energy += random.randint(5,10)
-        self.health -= random.randint(10,20)
+        self.health -= random.randint(5,10)
         self.happy += random.randint(5,10)
         return('развлекался')
     def do_sport(self):
-        self.energy -= random.randint(15,20)
+        self.energy -= random.randint(5,10)
         self.health += random.randint(5,10)
         self.happy += random.randint(5,10)
         return('занимался спортом')
@@ -34,29 +63,30 @@ class Student:
         if property <= 0:
             return(False)
 
-    def action_definition(self, seed, n1, n2, n3, study, do_sport, fun, relax):
+    def action_definition(self, seed, n1, n2, n3):
         if seed <= n1:
-            return(study)
+            action = self.study
         elif seed > n1 and seed <= n2:
-            return (do_sport)
+            action = self.do_sport
         elif seed > n2 and seed <= n3:
-            return (fun)
+            action = self.fun
         else:
-            return (relax)
+            action = self.relax
+        return (action())
 
     def update(self):
         seed = random.randint(0,100)
-        if self.predisposition == 1: #ботаник
-            return(self.action_definition(seed, 75, 80, 90, self.study(), self.do_sport(), self.fun(), self.relax()))
-        elif self.predisposition == 2: #спортсмен
-            return (self.action_definition(seed, 15, 80, 85, self.study(), self.do_sport(), self.fun(), self.relax()))
-        elif self.predisposition == 3: #чиллер
-            return (self.action_definition(seed, 20, 20, 30, self.study(), self.do_sport(), self.fun(), self.relax()))
-        elif self.predisposition == 4: #роцкер
-            return (self.action_definition(seed, 15, 25, 90, self.study(), self.do_sport(), self.fun(), self.relax()))
+        if self.__predisposition == 1: #ботаник
+            return(self.action_definition(seed, 75, 80, 90))
+        elif self.__predisposition == 2: #спортсмен
+            return (self.action_definition(seed, 15, 80, 85))
+        elif self.__predisposition == 3: #чиллер
+            return (self.action_definition(seed, 20, 20, 30))
+        elif self.__predisposition == 4: #роцкер
+            return (self.action_definition(seed, 15, 25, 90))
 
     def check_progress(self):
-        if self.progress <50:
+        if self.__progress <50:
             return(False)
 
 
@@ -86,6 +116,7 @@ class Controller:
             self.student_list[j].energy = 80
             self.student_list[j].happy = 80
             self.student_list[j].progress = 0
+
         print_list = []
         delete_student_list = []
 
@@ -135,7 +166,11 @@ def main():
     controller = Controller(num_student)
     print_list(controller.create_student())
     for i in range (num_semester):
-        print(f'\nСеместр {i+1}')
-        print_list(controller.update_semester())
+        if len(controller.student_list)!=0:
+            print(f'\nСеместр {i+1}')
+            print_list(controller.update_semester())
+        else:
+            print('\nНикто из студентов не прошел голодные игры. Игра окончена')
+            break
 main()
 
