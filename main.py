@@ -37,31 +37,28 @@ class Student:
     def happy(self, happy):
         self.__happy = happy
 
+    def change_property(self, health, energy, progress, happy):
+        self.health += health
+        self.energy += energy
+        self.progress += progress
+        self.happy += happy
+
     def study(self):
-        self.energy -= random.randint(10, 20)
-        self.health -= random.randint(10, 20)
-        self.progress += random.randint(25, 30)
-        self.happy -= random.randint(15, 20)
+        self.change_property(-random.randint(10, 20), -random.randint(10, 20), random.randint(25, 30),
+                             -random.randint(15, 20))
         return('учился')
     def relax(self):
-        self.happy += random.randint(5,10)
-        self.health += random.randint(5,10)
-        self.energy += random.randint(5,10)
+        self.change_property(random.randint(5, 10), random.randint(5, 10), 0,
+                             random.randint(5, 10))
         return('отдыхал')
     def fun(self):
-        self.energy += random.randint(5,10)
-        self.health -= random.randint(5,10)
-        self.happy += random.randint(5,10)
+        self.change_property(-random.randint(5, 10), random.randint(5, 10), 0,
+                             random.randint(5, 10))
         return('развлекался')
     def do_sport(self):
-        self.energy -= random.randint(5,10)
-        self.health += random.randint(5,10)
-        self.happy += random.randint(5,10)
+        self.change_property(random.randint(5, 10), -random.randint(5, 10), 0,
+                             random.randint(5, 10))
         return('занимался спортом')
-
-    def check_property(self, property):
-        if property <= 0:
-            return(False)
 
     def action_definition(self, seed, n1, n2, n3):
         if seed <= n1:
@@ -88,12 +85,23 @@ class Student:
     def check_progress(self):
         if self.__progress <50:
             return(False)
+    def check_property(self, property):
+        if property <= 0:
+            return(False)
 
 
 class Controller:
     def __init__(self, num_student):
-        self.num_student = num_student
-        self.student_list = []
+        self.__num_student = num_student
+        self.__student_list = []
+
+    @property
+    def num_student(self):
+        return self.__num_student
+
+    @property
+    def student_list(self):
+        return self.__student_list
 
     def create_student(self):
         print_list = []
